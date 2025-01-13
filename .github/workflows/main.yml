@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
+      # Step 1: Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -20,17 +20,25 @@ jobs:
         with:
           node-version: 18
 
-      # Step 3: Install dependencies
+      # Step 3: Navigate to the React app subdirectory
+      - name: Change directory to React app
+        run: cd climate-search-engine
+
+      # Step 4: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd climate-search-engine
+          npm install
 
-      # Step 4: Build the project
+      # Step 5: Build the React app
       - name: Build
-        run: npm run build
+        run: |
+          cd climate-search-engine
+          npm run build
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+          publish_dir: climate-search-engine/dist
