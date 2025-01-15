@@ -12,9 +12,10 @@ function App() {
 
     try {
       // Call your backend
+      console.log("endpoint:", import.meta.env.BACKEND_URL);
       const response = await fetch(
         // This should use the .env file to get the API endpoint
-        import.meta.env.BACKEND_URL,
+        import.meta.env.VITE_BACKEND_URL,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
