@@ -7,6 +7,7 @@ interface ChallengeBubblesProps {
     second: string;
     third: string;
   }
+  onBubbleSelect: (category: string) => void
 }
 
 const bubbleStyle = {
@@ -30,9 +31,14 @@ const individualBubbleStyle = {
   fontSize: '16px'
 }
 
-export const ChallengeBubbles: React.FC<ChallengeBubblesProps> = ({ answer }) => {
+export const ChallengeBubbles: React.FC<ChallengeBubblesProps> = ({ answer, onBubbleSelect }) => {
   const [hoveredBubble, setHoveredBubble] = useState<string | null>(null)
   const [selectedBubble, setSelectedBubble] = useState<string | null>(null)
+  
+  const handleBubbleClick = (category: string) => {
+    setSelectedBubble(category)
+    onBubbleSelect(category)
+  }
 
   return (
     <div style={bubbleStyle}>
@@ -50,7 +56,7 @@ export const ChallengeBubbles: React.FC<ChallengeBubblesProps> = ({ answer }) =>
           }}
           onMouseEnter={() => setHoveredBubble(category)}
           onMouseLeave={() => setHoveredBubble(null)}
-          onClick={() => setSelectedBubble(category)}
+          onClick={() => handleBubbleClick(category)}
         >
           {category}
         </div>
