@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import './App.css'
+import { ChallengeBubbles } from './props/ChallengeBubbles'
 
 function App() {
   const [question, setQuestion] = useState('')    // Store the user's question
-  const [answer, setAnswer] = useState('')        // Store the API response
+  const [answer, setAnswer] = useState<{
+    first: string;
+    second: string;
+    third: string;
+  } | null>(null) // Store the API response
   const [error, setError] = useState<string| null>(null) // To store any error messages
 
   const handleAsk = async () => {
     setError(null)          // Reset any previous errors
-    setAnswer('')           // Clear the old answer before fetching
+    setAnswer(null)         // Clear the old answer before fetching
 
     try {
       // Call your backend
@@ -33,7 +38,11 @@ function App() {
       // Parse the JSON result
       const data = await response.json()
       // data should look like { answer: "...some text..." }
-      setAnswer(data.answer || 'No answer returned')
+      setAnswer({
+        first: data.first || 'No first explanation',
+        second: data.second || 'No second explanation',
+        third: data.third || 'No third explanation'
+      })
     } catch (err: any) {
       setError(err.message || 'Something went wrong.')
     }
@@ -45,7 +54,11 @@ function App() {
       
       <textarea
         rows={4}
-        cols={50}
+        cols={100} // width
+          style={{
+          fontSize: '16px',  // Increases text size
+          padding: '10px'    // Optional: adds some padding
+        }}
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         placeholder="Type your question here..."
@@ -55,17 +68,13 @@ function App() {
       <button onClick={handleAsk}>
         Ask
       </button>
+      <br /><br />
 
       {/* If there's an error, display it */}
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
       {/* If there's an answer, display it */}
-      {answer && (
-        <div style={{ marginTop: '1rem' }}>
-          <strong>Response:</strong>
-          <p>{answer}</p>
-        </div>
-      )}
+      {answer && <ChallengeBubbles answer={answer} />}
     </div>
   )
 }
