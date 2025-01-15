@@ -13,7 +13,8 @@ function App() {
     try {
       // Call your backend
       const response = await fetch(
-        'https://climate-innovation-backend-production.up.railway.app/api/ask',
+        // This should use the .env file to get the API endpoint
+        import.meta.env.BACKEND_URL,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
